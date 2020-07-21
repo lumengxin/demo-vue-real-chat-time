@@ -111,8 +111,8 @@ export default {
       db.collection('chat')
         .add({
           message: this.message,
-		  createdAt: new Date(),
-		  author: this.authUser.email
+		      createdAt: new Date(),
+		      author: this.authUser.email
         })
         .then(() => {
           this.scrollToBottom()
@@ -151,32 +151,29 @@ export default {
         this.authUser.displayName = user.displayName
         this.authUser.email = user.email
         this.authUser.phoneNumber = user.phoneNumber
-        console.log(this.authUser)
+        console.log("this.authUser->", this.authUser)
       } else {
 		  this.authUser = {}
 	  }
     })
 
     this.fetchMessages()
+  },
+  beforeRouteEnter(to, from, next) {
+    next (vm => {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          next()
+        } else {
+          vm.$router.push('/login')
+        }
+      })
+    })
   }
-  // beforeRouteEnter(to, from, next) {
-  //   next (vm => {
-  //     firebase.auth().onAuthStateChanged(user => {
-  //       if (user) {
-  //         next()
-  //       } else {
-  //         vm.$router.push('/login')
-  //       }
-  //     })
-  //   })
-  // }
 }
 </script>
 
 <style scoped>
-.sent_msg {
-}
-
 .container {
   max-width: 1170px;
   margin: auto;

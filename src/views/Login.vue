@@ -49,13 +49,15 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.userForm.email, this.userForm.password)
+        .then(res => {
+          console.log("res ->", res)
+          this.$router.push('/')
+        })
         .catch(function(error) {
           // Handle Errors here.
           var errorCode = error.code
           var errorMessage = error.message
-          // ...
-		})
-		this.$router.push('/')
+        })
     }
   }
 }
